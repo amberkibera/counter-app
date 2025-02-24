@@ -21,6 +21,8 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.count = 0;
+    this.min = 0;
+    this.max = 30;
     this.title = "";
     this.t = this.t || {};
     this.t = {
@@ -41,7 +43,9 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
     return {
       ...super.properties,
       title: { type: String },
-      count: { type: Number, refelct: true},
+      count: { type: Number, reflect: true},
+      min: {type: Number },
+      max: {type: Number}
     };
   }
 
@@ -56,14 +60,23 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
         font-family: var(--ddd-font-navigation);
       }
       :host([count="18"]){
+        color: var(--ddd-theme-default-sunsetOrange, #FF6F61);
+      }
+      :host([count="21"]){
         color: var(--ddd-theme-default-athertonViolet);
+      }
+      :host([count="30"]) {
+        color: var(--ddd-theme-default-black, #000000);
       }
       .wrapper {
         margin: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-4);
+        background: rgba(173, 216, 230, 0.9); 
+        border-radius: 8px;
       }
       .counter{
         font-size: var(--counter-app-label-font-size, var(--ddd-font-size-xxl));
+        font-weight: bold; 
       }
     `];
   }
@@ -107,7 +120,7 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
         <div class ="counter">${this.count}</div>
         <div class ="buttons">
           <button @click="${this.decrease}" ?disabled="${this.count === this.min}">-1</button>
-          <button @click="${this.increase}" ?disabled="${this.isMax()}">+1</button>
+          <button @click="${this.increase}" ?disabled="${this.count === this.max}">+1</button>
         </div>
       </div>
     </confetti-container>
@@ -121,6 +134,8 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
   increase() {
     this.count++;
   }
+
+
 
   /**
    * haxProperties integration via file reference
