@@ -21,7 +21,7 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.count = 0;
-    this.min = 0;
+    this.min = 3;
     this.max = 30;
     this.title = "";
     this.t = this.t || {};
@@ -61,6 +61,9 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
       }
       :host([count="18"]){
         color: var(--ddd-theme-default-sunsetOrange, #FF6F61);
+      }
+      :host([count="3"]){
+        color: var(--ddd-theme-default-athertonViolet);
       }
       :host([count="21"]){
         color: var(--ddd-theme-default-athertonViolet);
@@ -120,6 +123,7 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
         <div class ="counter">${this.count}</div>
         <div class ="buttons">
           <button @click="${this.decrease}" ?disabled="${this.count === this.min}">-1</button>
+          <button @click="${this.reset}">Reset</button>
           <button @click="${this.increase}" ?disabled="${this.count === this.max}">+1</button>
         </div>
       </div>
@@ -134,6 +138,18 @@ export class CounterApp extends DDDSuper(I18NMixin(LitElement)) {
   increase() {
     this.count++;
   }
+  decrease() {
+    this.count--;
+  }
+  reset () {
+    this.count = this.__counter;
+  }
+  firstUpdated(changedProperties) {
+    super.updated(changedProperties);
+    this.__counter = this.count;
+  }
+  
+
 
 
 
